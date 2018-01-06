@@ -17,4 +17,27 @@ def check_answer(self, question, answers):
     while answer not in answers:
         answer = input(question).lower()
     return answer
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Character():
+    """Defines character attributes and actions"""
+
+    def __init__(self, name, inventory = {}, hp = 100, ap = 10):
+        """player attributes"""
+        self.name = name
+        self.hp = hp
+        self.ap = ap
+        self.inventory = inventory
+        self.classed = None
+        self.weapon = None
+
+player = Character("Tom")
+
+player.inventory["silver"]=2
+player.inventory["gold"]=3
+
+for k, v in player.inventory.items():
+    print(k, ":", v).sort()
+
+
+
 
