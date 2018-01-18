@@ -1,3 +1,36 @@
+Items in each room (t)=can be taken (e)=can be examined not taken
+
+1 start: (t)stick
+         (t)items in chest depending on class
+         (e)window
+         (e)door
+         (e)rug
+         (e)trapdoor
+         (e)chest
+         (e)painting
+         (e)wall
+
+2 dining: (t)arrow
+          (t)rope
+          (e)tapestry
+          (e)chest
+          (e)table
+
+3 kitchen: (t)spoon
+
+4 library: (t)blank book
+           (e)window
+           (e)shelves
+
+5 outside: (t)rope
+           (e)wall
+
+6 ballroom: (e)mirror
+            *put in monster maybe? for intro to combat
+
+
+
+
 --------------------------------------------------------------------------------
 FLOOR 1
 
@@ -6,7 +39,7 @@ FLOOR 1
             |                                                        |
             |                                                        |
             |                                                        |
-            |                       Start                            |
+            |                    (1)Start                            |
             |                                                        |
             |                                                        |
             |                                                        |
@@ -22,18 +55,18 @@ FLOOR 2
     |                    |                                   |                     |                                >
     |                    |                                   |                     |                                >
     |                    |                                   |                     |                                >
-    |   Kitchen          \          Dining Room              \      Library        |                                >
-    |                    /                                   /                     -            Outside             >
+    |   Kitchen (3)  x   \          Dining Room    (2)       \      Library (4)    |                                >
+    |                x   /                                   /                     -            Outside (5)         >
     |                    |                                   |                     |                                >
     |                    |                                   |                     |                                >
     |                    |                                   |                     |                                >
     |                    |                                   |                     |                                >
-    |____________________|________________/\_________________|_____________________|_______________________________ >
+    |________________/\__|________________/\_________________|__/\_________________|_______________________________ >
                 |                                                   |
                 |                                                   |
                 |                                                   |
                 |                                                   |
-                |           Ballroom                                |
+                |           Ballroom    (6)                         |
                 |                                                   |
                 |                                                   |
                 |                                                   |
