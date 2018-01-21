@@ -97,7 +97,10 @@ def roomcommands():
         check_path()
         command = input(">>> ").lower().split()
 
-        if command[0] == "help":
+        if len(command) == 0:
+            resetscreen()
+
+        elif command[0] == "help":
             cls()
             print("#################################################################")
             print("#                                                               #")
