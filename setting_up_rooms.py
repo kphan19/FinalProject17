@@ -1,9 +1,15 @@
+# bringing in stuff from main file for testing purposes
+import os
+def cls():
+    """clears screen"""
+    os.system('cls' if os.name=='nt' else 'clear')
+#----------------------------------------------------------------------------------------------------------------------------------------------
 rooms = {
     1 :{"name":"Start",
-        "description":"\nYou wake up on a cold floor. Don't ask me how you got there. You sit up and decide to take a look around and take in your surroundings.\nCovering the floor across from you is a dusty ol' rug. The walls are tall and made of stone. On one of them, there is an unsettling portrait \nof some random old lady. Opposite the painting is a small window. In the corner you spy a chest. Standing up, you check your pockets and find:\n1 gold\n1 silver\n10 copper\nand a crumpled up note...\n\nThe note reads:\n\"WELCOME TO THE ONCE GREAT KINGDOM OF AZURON. SO SORRY ABOUT YOUR CURRENT SITUATION BUT IT COULDN'T BE HELPED.\nYOUR OVERALL GOAL IS TO ESCAPE THIS CASTLE IN ONE PIECE (PREFERABLY ALIVE), HOWEVER THERE ARE MANY OTHER THINGS TO DO WHILE YOU'RE HERE.\nTHIS ROOM WILL SERVE AS YOUR TUTORIAL. I WISH YOU THE BEST OF LUCK.\"\nTry using the 'examine' command (i.e. 'examine painting').\n",
+        "description":"You wake up on a cold floor. Don't ask me how you got there. You sit up and decide to take a look around and take in your surroundings.\nCovering the floor across from you is a dusty ol' rug. The walls are tall and made of stone. On one of them, there is an unsettling painting \nof some random old lady. Opposite the painting is a small window. In the corner you spy a chest. Standing up, you check your pockets and find:\n1 gold\n1 silver\n10 copper\nand a crumpled up note...\n\nThe note reads:\n\"WELCOME TO THE ONCE GREAT KINGDOM OF AZURON. SO SORRY ABOUT YOUR CURRENT SITUATION BUT IT COULDN'T BE HELPED.\nYOUR OVERALL GOAL IS TO ESCAPE THIS CASTLE IN ONE PIECE (PREFERABLY ALIVE), HOWEVER THERE ARE MANY OTHER THINGS TO DO WHILE YOU'RE HERE.\nTHIS ROOM WILL SERVE AS YOUR TUTORIAL. I WISH YOU THE BEST OF LUCK.\"\n\n***REMINDER: If you ever get stuck type 'help' to access the help menu. It will give you a list of possible commands.\n\nTry using 'examine chest'.\n",
         "down": 2,
-        "examine":{"door":"\nOf course you would try the door. Unfortunately, it's locked up and barred nice and tight. No getting through there m8.",
-                   "window":"\nYou peek your head out the window and realize that if you jump out, you'd end up being very, very dead.\nThe room you're in seems to be in some high up tower. There aren't any vines within arms reach that you could use to shimmy down the side either.\nWhat a shame.",
+        "examine":{"door":"\nOf course you would try the door. Unfortunately, it's locked up and barred nice and tight. No getting through there m8.\n",
+                   "window":"\nYou peek your head out the window and realize that if you jump out, you'd end up being very, very dead.\nThe room you're in seems to be in some high up tower. There aren't any vines within arms reach that you could use to shimmy down the side either.\nWhat a shame.\n",
                    "wall":"\nYou look closely at the wall, hoping for some kind of clue as to what you're doing. You see nothing but tiny tally marks...alot of them.\n",
                    "rug":"\nThe rug looks expensive. As you go to take a look at it, something rattles...You flip it up and find...SHOCKER a trapdoor.\n",
                    "trapdoor":"\nYou pull the handle and the door swings open surprisingly easy. You notice steps that spiral down and disappear into the dark...\n",
@@ -45,8 +51,97 @@ rooms = {
 # This breaks up simple commands. It will look for command words such as go, get, or examine
 # in the first part of list i.e. "go down" = list = ["go", "down"] list[0] = "go" and then will use the
 # second word to further explain where they're going or what they're retrieving.
-#command = input(">>> ").lower().split()
-#location = 1
+def resetscreen():
+    cls()
+    print("--------------------------------------------------------------------------------------------------------------------------------------------------")
+    print(rooms[location]["description"])
+    print("--------------------------------------------------------------------------------------------------------------------------------------------------")
 
-#if command[0] == "get":
-#    if command[1] in rooms[location]["items"]:
+def roomcommands():
+    global location
+
+    while True:
+        command = input(">>> ").lower().split()
+
+        if command[0] == "help":
+            cls()
+            print("#################################################################")
+            print("#                                                               #")
+            print("#                          HELP MENU                            #")
+            print("#                                                               #")
+            print("#---------------------------------------------------------------#")
+            print("#                                                               #")
+            print("# Welcome to the game. You are trapped in a mysterious castle   #")
+            print("# and must find your way out. Collect items that will help you  #")
+            print("# on your journey and battle your way to victory.               #")
+            print("#                                                               #")
+            print("# List of Commands                                              #")
+            print("#                                                               #")
+            print("# Moving between rooms:                                         #")
+            print("#    Typing 'go north' will make you go through the door      #")
+            print("#    located north of you. This also works with the other basic #")
+            print("#    cardinal directions (south, east, west) as well as up or   #")
+            print("#    down.                                                      #")
+            print("#                                                               #")
+            print("# Examining items:                                              #")
+            print("#    Typing 'examine' followed by an object in the room will    #")
+            print("#    give you more information about it.                        #")
+            print("#    (i.e. 'examine painting' will tell you about the painting) #")
+            print("#                                                               #")
+            print("# Taking items:                                                 #")
+            print("#    Typing 'get' followed by an item will add it to your       #")
+            print("#    inventory.                                                 #")
+            print("#    (i.e. 'get stick' will give you a stick)                   #")
+            print("#                                                               #")
+            print("# When you're ready, press the enter key to continue.           #")
+            print("#                                                               #")
+            print("#################################################################")
+            done = input(">>> ").lower()
+            print(done)
+            resetscreen()
+
+        elif len(command) == 2:
+            if command[0] == "get":
+                if command[1] in rooms[location]["items"]:
+                    if rooms[location]["items"][command[1]] == "ntaken":
+                        resetscreen()
+                        print("\n" + command[1].upper() + " has been added to your inventory!\n")
+                        rooms[location]["items"][command[1]] = "taken"
+                    else:
+                        resetscreen()
+                        print("\nYou already took that.\n")
+                else:
+                    resetscreen()
+                    print("\nThat isn't something you can take at the moment.\n")
+
+            elif command[0] == "examine":
+                if command[1] in rooms[location]["examine"]:
+                    resetscreen()
+                    print(rooms[location]["examine"][command[1]])
+                else:
+                    resetscreen()
+                    print("\nThat's not something you can inspect. Try something else.\n")
+
+            elif command[0] == "go":
+                if command[1] in rooms[location]:
+                    location = rooms[location][command[1]]
+                    resetscreen()
+                else:
+                    resetscreen()
+                    print("\nSorry m8. That's not somewhere you can go at the moment.\n")
+
+            else:
+                resetscreen()
+                print("\nNo. Type something else. Preferably use a valid command. Use the 'help' command if you need it.\n")
+
+        else:
+            resetscreen()
+            print("\nNo. Type something else. Preferably use a valid command. Use the 'help' command if you need it.\n")
+
+
+location = 1
+print("--------------------------------------------------------------------------------------------------------------------------------------------------")
+print(rooms[location]["description"])
+print("--------------------------------------------------------------------------------------------------------------------------------------------------")
+roomcommands()
+
