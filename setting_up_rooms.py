@@ -7,12 +7,10 @@ def cls():
 rooms = {
     1 :{"name":"Start",
         "description":"You wake up on a cold floor. Don't ask me how you got there. You sit up and decide to take a look around and take in your surroundings.\nCovering the floor across from you is a dusty ol' rug. The walls are tall and made of stone. On one of them, there is an unsettling painting \nof some random old lady. Opposite the painting is a small window. In the corner you spy a chest. Standing up, you check your pockets and find:\n1 gold\n1 silver\n10 copper\nand a crumpled up note...\n\nThe note reads:\n\"WELCOME TO THE ONCE GREAT KINGDOM OF AZURON. SO SORRY ABOUT YOUR CURRENT SITUATION BUT IT COULDN'T BE HELPED.\nYOUR OVERALL GOAL IS TO ESCAPE THIS CASTLE IN ONE PIECE (PREFERABLY ALIVE), HOWEVER THERE ARE MANY OTHER THINGS TO DO WHILE YOU'RE HERE.\nTHIS ROOM WILL SERVE AS YOUR TUTORIAL. I WISH YOU THE BEST OF LUCK.\"\n\n***REMINDER: If you ever get stuck type 'help' to access the help menu. It will give you a list of possible commands.\n\nTry using 'examine chest'.\n",
-        "down": 2,
         "examine":{"door":{"nexamined":"\nOf course you would try the door. Unfortunately, it's locked up and barred nice and tight. No getting through there m8.\n"},
                    "window":{"nexamined":"\nYou peek your head out the window and realize that if you jump out, you'd end up being very, very dead.\nThe room you're in seems to be in some high up tower. There aren't any vines within arms reach that you could use to shimmy down the side either.\nWhat a shame.\n"},
                    "wall":{"nexamined":"\nYou look closely at the wall, hoping for some kind of clue as to what you're doing. You see nothing but tiny tally marks...alot of them.\n"},
                    "rug":{"nexamined":"\nThe rug looks expensive. As you go to take a look at it, something rattles...You flip it up and find...SHOCKER a trapdoor.\n"},
-                   "trapdoor":{"nexamined":"\nYou pull the handle and the door swings open surprisingly easy. You notice steps that spiral down and disappear into the dark...\n"},
                    "painting":{"nexamined":"\nYou look at the old painting. Its eyes are so serious. It seems to be looking at something. You follow its gaze to the corner and see\na stick of some sort in the corner. Try using the \"get\" command. (\"get\" followed by item so \"get stick\")\n"},
                    "chest":""},
         "examine2":{"door":"\nYou already checked the door. You're still not getting out that way. Try something else.\n",
@@ -27,7 +25,6 @@ rooms = {
         "description":"\nYou stumble through a heavy pair of doors into what appears to be a Dining Hall. You look around and see a large table in the center of the room,\na large tapestry on the west wall, a chest in the corner, and doors on the northern and eastern walls.\n",
         "north":6,
         "east":7,
-        "west":4,
         "examine":{"table":{"nexamined":"\nYou walk over to the table and see an arrow stuck on the tablecloth.\n"},
                    "tapestry":{"nexamined":"\nThere's a slight breeze coming from...behind the fabric? You give the tapestry a tug and the whole thing falls down\ncausing a cloud of dust to explode in your face. When the dust settles, you find another set of doors!\n"},
                    "chest":{"nexamined":"\nYou go to open the chest hoping to find something useful. Instead, when you lift the lid, a tiny little dart shoots out at you\nand gets you in the arm...how unfortunate. Luckily it didn't do too much damage, but in the future be cautious of possible traps.\n"},
@@ -69,9 +66,7 @@ rooms = {
         "description":"\nOoo. A spooky ballroom. There's barely any light coming into the room, making it extra spooky, and for good reason. DA DA!\nYour first monster has appeared!\n",
         "opponents":{"alive":["monster1"]}}}
 
-# This breaks up simple commands. It will look for command words such as go, get, or examine
-# in the first part of list i.e. "go down" = list = ["go", "down"] list[0] = "go" and then will use the
-# second word to further explain where they're going or what they're retrieving.
+# Keeps screen neat by clearing previous commands
 def resetscreen():
     cls()
     print("--------------------------------------------------------------------------------------------------------------------------------------------------")
@@ -80,10 +75,26 @@ def resetscreen():
     print(rooms[location]["description"])
     print("--------------------------------------------------------------------------------------------------------------------------------------------------")
 
+# Sets parameters to unlock other possible commands
+def check_path():
+    if "examined" in rooms[1]["examine"]["rug"] and "trapdoor" in rooms[1]["examine"] and "examined" in rooms[1]["examine"]["trapdoor"]:
+        rooms[1]["down"] = 2
+
+    elif "examined" in rooms[1]["examine"]["rug"]:
+        rooms[1]["examine"]["trapdoor"] = {"nexamined":"\nYou pull the handle and the door swings open surprisingly easy. You notice steps that spiral down and disappear into the dark...\n"}
+
+    if "examined" in rooms[2]["examine"]["tapestry"]:
+        rooms[2]["west"] = 4
+
+
+# This breaks up simple commands. It will look for command words such as go, get, or examine
+# in the first part of list i.e. "go down" = list = ["go", "down"] list[0] = "go" and then will use the
+# second word to further explain where they're going or what they're retrieving.
 def roomcommands():
     global location
 
     while True:
+        check_path()
         command = input(">>> ").lower().split()
 
         if command[0] == "help":
