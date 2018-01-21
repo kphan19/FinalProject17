@@ -19,7 +19,28 @@ rooms = {
                    "tapestry":"\nThere's a slight breeze coming from...behind the fabric? You give the tapestry a tug and the whole thing falls down\ncausing a cloud of dust to explode in your face. When the dust settles, you find another set of doors!\n",
                    "chest":"\nYou go to open the chest hoping to find something useful. Instead, when you lift the lid, a tiny little dart shoots out at you\nand gets you in the arm...how unfortunate. Luckily it didn't do too much damage, but in the future be cautious of possible traps.\n",
                    "door":"\nUse 'go' followed by a direction (north,west,east,south,up,down) to go through a door.\n"},
-        "items":{"arrow":"ntaken"}}}
+        "items":{"arrow":"ntaken"}},
+    3 :{"name":"Kitchen",
+        "description":"\nYou open the door to what seems to be a kitchen. As you step in...oh dear. The floor gives way under you and you fall...\n",
+        "examine":"",
+        "items":{"spoon":"ntaken"}},
+    4 :{"name":"Library",
+        "description":"\nYou push on the doors. The light streaming in through the window in front of you is almost blinding. Once you're eyes adjust, \nyou realize you seem to be in some old library with a large, dusty shelf lining the wall.\n",
+        "north":6,
+        "east":2,
+        "west":5,
+        "examine":{"window":"\nYou walk over to the west wall, in front of the giant set of windows, and give it a push. Surprisingly, it swings open with ease.\nOutside you see a huge yard. You could probably climb through the window if you tried...\n",
+                   "shelf":"\nYou swipe your finger along the shelf and disrupt a very thick layer of dust. Then you notice a book sitting all by itself in the corner.\n",
+                   "book":"\nOpening the book, you make the mistake of flipping through the pages revealing...more dust. Good job.\n"},
+        "items":{"book":"ntaken"}},
+    5 :{"name":"Courtyard",
+        "description":"\nHECK YEA BABY! FREE AT...last? Ha no, not that easy. You look around and notice the entire yard is surrounded by very large, concrete walls.\nToo bad, so sad. Off to the side, you see a piece of rope.\n",
+        "east":4,
+        "examine":{"wall":"\nUnfortunately, the wall is too tall for you to climb, even with a rope. There is no hope of escape. Just give up.\n",
+                   "rope":"\nIt's a decent length of rope. Could be useful later on.\n"},
+        "items":{"rope":"ntaken"}},
+    6 :{"name":"Ballroom",
+        "description":"\nOoo. A spooky ballroom. There's barely any light coming into the room, making it extra spooky, and for good reason. DA DA!\nYour first monster has appeared!\n"}}
 
 # This breaks up simple commands. It will look for command words such as go, get, or examine
 # in the first part of list i.e. "go down" = list = ["go", "down"] list[0] = "go" and then will use the

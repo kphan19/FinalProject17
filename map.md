@@ -17,6 +17,7 @@ Items in each room (t)=can be taken (e)=can be examined not taken
           (e)table
 
 3 kitchen: (t)spoon
+           *xx = fall down to lower level
 
 4 library: (t)blank book
            (e)window
@@ -27,6 +28,8 @@ Items in each room (t)=can be taken (e)=can be examined not taken
 
 6 ballroom: (e)mirror
             *put in monster maybe? for intro to combat
+
+7 dungeon: (?
 
 
 
