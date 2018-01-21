@@ -113,20 +113,29 @@ class Story():
         print("# and must find your way out. Collect items that will help you  #")
         print("# on your journey and battle your way to victory.               #")
         print("#                                                               #")
-        print("# List of Commands:                                             #")
-        print("# - *COMMANDS FOR PLAYER TO USE DONT FORGET TO UPDATE* to       #")
-        print("#   navigate your way through the rooms of the castle           #")
+        print("# List of Commands                                              #")
         print("#                                                               #")
-        print("# - 'examine' followed by an object to                          #")
-        print("#   gain information about it                                   #")
+        print("# Moving between rooms:                                         #")
+        print("#    Typing 'move north' will make you go through the door      #")
+        print("#    located north of you. This also works with the other basic #")
+        print("#    cardinal directions (south, east, west) as well as up or   #")
+        print("#    down.                                                      #")
         print("#                                                               #")
-        print("# - 'take' followed by an item to add it to your                #")
-        print("#   inventory                                                   #")
+        print("# Examining items:                                              #")
+        print("#    Typing 'examine' followed by an object in the room will    #")
+        print("#    give you more information about it.                        #")
+        print("#    (i.e. 'examine painting' will tell you about the painting) #")
+        print("#                                                               #")
+        print("# Taking items:                                                 #")
+        print("#    Typing 'get' followed by an item will add it to your       #")
+        print("#    inventory.                                                 #")
+        print("#    (i.e. 'get stick' will give you a stick)                   #")
         print("#                                                               #")
         print("#         When you're ready, type 'menu' to return to           #")
         print("#                   the main title screen.                      #")
         print("#                                                               #")
         print("#################################################################")
+
         go_back = input(">>> ").lower()
         if go_back == ("menu"):
             """Takes player back to main menu and clears screen"""
@@ -138,7 +147,7 @@ class Story():
     # PLAYER SET UP
     def create_char(self):
 
-        global rndm_class
+        global rndm_class, player
         rndm_class = 0
         print_slow("Please choose a name, adventurer. ", .03)
         time.sleep(1)
