@@ -21,6 +21,8 @@ def check_answer(question, answers):
     return answer
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------
 # ROOM DEFINITIONS
+# examine 2 is for when objects have already been examined
+# ntaken is to show that an object hasn't been taken
 location = 1
 rooms = {
     1 :{"name":"Start",
@@ -30,14 +32,15 @@ rooms = {
                    "wall":{"nexamined":"\nYou look closely at the wall, hoping for some kind of clue as to what you're doing. You see nothing but tiny tally marks...alot of them.\n"},
                    "rug":{"nexamined":"\nThe rug looks expensive. As you go to take a look at it, something rattles...You flip it up and find...SHOCKER a trapdoor.\n"},
                    "painting":{"nexamined":"\nYou look at the old painting. Its eyes are so serious. It seems to be looking at something. You follow its gaze to the corner and see\na stick of some sort in the corner. Try using the \"get\" command. (\"get\" followed by item so \"get stick\")\n"},
-                   "chest":""},
+                   "chest":"\nYou open up the chest and find a note.\n\"THESE ARE YOUR STARTER ITEMS PLEASE DON LOSE THEM. HAVE FUN.\"\n\nInside the chest, you see:\nbow\narrows\nmajestic_cape\nbrass_knuckles\nbag\nmagical_nuke (can only be used by a mage suucker)\n"},
         "examine2":{"door":"\nYou already checked the door. You're still not getting out that way. Try something else.\n",
                     "window":"\nYou can't leave via the window. Nothing's changed about that. Try something else.\n",
                     "wall":"\nDo you really find the wall that interesting? My guy do something else.\n",
                     "rug":"\nThe rug is flipped up just like you left it, exposing that lovely trapdoor. Nothing else you can do with it though... Try something else.\n",
                     "trapdoor":"\nThe door is wide open. Go on down if you're done with this room.\n",
+                    "chest":"\nInside the chest, you see:\nbow\narrows\nmajestic_cape\nbrass_knuckles\nbag\nmagical_nuke (can only be used by a mage suucker)\n",
                     "painting":"\nAfter the stick, this lovely painting has no more significance. Find something else to do.\n"},
-        "items":{"stick":"ntaken"},
+        "items":{"gold":{"taken":1}, "silver":{"taken":1}, "copper":{"taken":10}, "stick":{"ntaken":1}, "bow":{"ntaken":1}, "arrows":{"ntaken":10}, "majestic_cape":{"ntaken":1}, "brass_knuckles":{"ntaken":1}, "bag":{"ntaken":1}, "magical_nuke":{"ntaken":1}},
         "opponents":{""}},
     2 :{"name":"Dining Hall",
         "description":"\nYou stumble through a heavy pair of doors into what appears to be a Dining Hall. You look around and see a large table in the center of the room,\na large tapestry on the west wall, a chest in the corner, and doors on the northern and eastern walls.\n",
@@ -51,25 +54,24 @@ rooms = {
                     "tapestry":"\nYou pulled it off already. Congrats. Try to do something else, like go through the doors? That is, if you're ready.\n",
                     "chest":"\nDo you want to get hit again? There's nothing more to this chest if you already learned your lesson. Try to do something else.\n",
                     "door":"\nIf you really need help with this, type 'help'.\n"},
-        "items":{"arrow":"ntaken"},
+        "items":{"arrow":{"ntaken":1}},
         "opponents":{""}},
     7 :{"name":"Kitchen", # This was originally room 3 (Kitchen) but it leads to room 7 (dungeon) so i just got rid of a room description for 3
         "description":"\nYou open the door to what seems to be a kitchen. As you step in...oh dear. The floor gives way under you and you fall...\nYou end up losing some health. When your eyes adjust to the dim lighting, you see that you are in some kind of dungeon and face to face with..a MoNsTeR! Gasp.\n",
         "examine":"",
         "opponents":{"alive":["monster1"]},
-        "items":{"spoon":"ntaken"}},
+        "items":{"spoon":{"ntaken":1}}},
     4 :{"name":"Library",
         "description":"\nYou push on the doors. The light streaming in through the window in front of you is almost blinding. Once you're eyes adjust, \nyou realize you seem to be in some old library with a large, dusty shelf lining the wall.\n",
         "north":6,
         "east":2,
-        "west":5,
         "examine":{"window":{"nexamined":"\nYou walk over to the west wall, in front of the giant set of windows, and give it a push. Surprisingly, it swings open with ease.\nOutside you see a huge yard. You could probably climb through the window if you tried...\n"},
                    "shelf":{"nexamined":"\nYou swipe your finger along the shelf and disrupt a very thick layer of dust. Then you notice a book sitting all by itself in the corner.\n"},
                    "book":{"nexamined":"\nOpening the book, you make the mistake of flipping through the pages revealing...more dust. Good job.\n"}},
         "examine2":{"window":"\nThe window is already open. You can go out if you want, or try doing something else.\n",
                     "shelf":"\nAfter the book, the shelf has no other significance, other than the fact that it's REALLY dusty. Try doing something else.\n",
                     "book":"\nDid you take it? If you didn't, you can if you want to. Otherwise Find something else to do.\n"},
-        "items":{"book":"ntaken"},
+        "items":{"book":{"ntaken":1}},
         "opponents":{""}},
     5 :{"name":"Courtyard",
         "description":"\nHECK YEA BABY! FREE AT...last? Ha no, not that easy. You look around and notice the entire yard is surrounded by very large, concrete walls.\nToo bad, so sad. Off to the side, you see a piece of rope.\n",
@@ -78,11 +80,13 @@ rooms = {
                    "rope":{"nexamined":"\nIt's a decent length of rope. Could be useful later on.\n"}},
         "examine2":{"wall":"\nMan, you're not getting out that way. Trust me. I designed it that way. Find something else to do.\n",
                     "rope":"\nDid you take it? If you didn't, you can if you want to. Otherwise do something else.\n"},
-        "items":{"rope":"ntaken"},
+        "items":{"rope":{"ntaken":1}},
         "opponents":{""}},
     6 :{"name":"Ballroom",
         "description":"\nOoo. A spooky ballroom. There's barely any light coming into the room, making it extra spooky, and for good reason. DA DA!\nYour first monster has appeared!\n",
-        "opponents":{"alive":["monster1"]}}}
+        "opponents":{"alive":["monster1"]},
+        "examine":"",
+        "items":""}}
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # ALL ATTRIBUTES OF ANY CHARACTERS IN GAME
@@ -125,6 +129,10 @@ class Story():
         print("--------------------------------------------------------------------------------------------------------------------------------------------------")
 
     def check_path(self):
+        """This is for parameters. Will check before continuing loop."""
+        global location
+        if location == 7:
+            location = 6
         if "examined" in rooms[1]["examine"]["rug"] and "trapdoor" in rooms[1]["examine"] and "examined" in rooms[1]["examine"]["trapdoor"]:
             rooms[1]["down"] = 2
 
@@ -134,7 +142,24 @@ class Story():
         if "examined" in rooms[2]["examine"]["tapestry"]:
             rooms[2]["west"] = 4
 
+        if "examined" in rooms[4]["examine"]["window"]:
+            rooms[4]["west"] = 5
+
+        if location == 6 and "alive" in rooms[6]["opponents"]:
+            print("Oh yeah...so because the creator of this game was pressured with time constraints and midterms, SKELETON takes the oppurtunity to call upon\nhis other dead brethren before you have time to reach for a weapon. They spook you to death with their rattly bones...\n")
+            time.sleep(5)
+            print("THANKS FOR PLAYINGGGGGGGGGGGGGGGGGG gg m8")
+            time.sleep(3)
+            rooms[1]["down"] = 0
+            rooms[2]["west"] = 0
+            rooms[4]["west"] = 0
+            location = 1
+            cls()
+            self.new_game()
+
     def roomcommands(self):
+        """While loop for whenever in a room and passes the above parameters
+            Breaks input into a list and then checks list to see if it matches any statements below"""
         global location
         while True:
             self.check_path()
@@ -183,10 +208,11 @@ class Story():
             elif len(command) == 2:
                 if command[0] == "get":
                     if command[1] in rooms[location]["items"]:
-                        if rooms[location]["items"][command[1]] == "ntaken":
+                        if "ntaken" in rooms[location]["items"][command[1]]:
                             self.resetscreen()
-                            print("\n" + command[1].upper() + " has been added to your inventory!\n")
+                            print("\n" + str(rooms[location]["items"][command[1]]["ntaken"]) + "" + command[1].upper() + " has been added to your inventory!\n")
                             rooms[location]["items"][command[1]] = "taken"
+
                         else:
                             self.resetscreen()
                             print("\nYou already took that.\n")
@@ -209,8 +235,12 @@ class Story():
 
                 elif command[0] == "go":
                     if command[1] in rooms[location]:
-                        location = rooms[location][command[1]]
-                        self.resetscreen()
+                        if rooms[location][command[1]] != 0:
+                            location = rooms[location][command[1]]
+                            self.resetscreen()
+                        else:
+                            self.resetscreen()
+                            print("\nSorry m8. That's not somewhere you can go at the moment.\n")
                     else:
                         self.resetscreen()
                         print("\nSorry m8. That's not somewhere you can go at the moment.\n")
@@ -396,7 +426,10 @@ class Story():
         cls()
         self.chosen_class()
 
+
+
     def chosen_class(self):
+        global character_class
         if archer > mage and archer > thief and archer > brute or rndm_class == ("archer"):
             character_class = archer
             print_slow("Congratulations. You have been classified as an 'Archer'\n", .03)
@@ -427,8 +460,41 @@ class Story():
             time.sleep(2)
             print_slow("You will be given certain advantages based on your class.", .03)
             time.sleep(2)
+        self.class_atr()
 
+    def class_atr(self):
+        if character_class == "archer":
+            bow = 2
+            arrow = 7
+            sneak = 2
+            rusty_sword = 3
+            magical_nuke = 1
+            brass_knuckles = 3
 
+        elif character_class == "mage":
+            bow = 1
+            arrow = 1
+            sneak = 100
+            rusty_sword = 3
+            magical_nuke = 9000
+            brass_knuckles = 1
+
+        elif character_class == "thief":
+            bow = 1
+            arrow = 1
+            sneak = 1000000
+            rusty_sword = 3
+            magical_nuke = 1
+            brass_knuckles = 4
+
+        else:
+            bow = 1
+            arrow = 1
+            sneak = -2
+            rusty_sword = 10
+            magical_nuke = 1
+            brass_knuckles = 12
 
 
 new_game = Story()
+
